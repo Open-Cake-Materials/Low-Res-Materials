@@ -1,20 +1,28 @@
-name: Generate Low-Res Textures
+name: Process Textures
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "Original-Photos/**"
+      - "data/words.txt"
+      - "scripts/**"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  generate-textures:
+  process:
+    if: "!startsWith(github.event.head_commit.message, 'chore(textures):')"
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -22,19 +30,22 @@ jobs:
           python-version: "3.12"
 
       - name: Install Pillow
-        run: pip install pillow
+        run: pip install Pillow
 
-      - name: Run texture processing script
+      - name: Rename new source photos
+        run: python scripts/rename_textures.py
+
+      - name: Regenerate square textures
         run: python scripts/process_textures.py
 
-      - name: Commit and push generated textures
+      - name: Commit and push updated textures
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add 64p 128p 256p
+          git add -A
           if git diff --staged --quiet; then
             echo "No changes to commit."
           else
-            git commit -m "Generate 64p, 128p, and 256p textures"
+            git commit -m "chore(textures): rename and regenerate square textures"
             git push
           fi
