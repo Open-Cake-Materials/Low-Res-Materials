@@ -5,14 +5,14 @@ Licensed under [CC0-1.0 license](LICENSE)</br>
 Some photos in low res looks better, some worse ;)</br>
 
 <h2>How is it made?</h2>
-We photograph walls and ground, and then use a simple script to lower the resolution.</br>
-Script to lower the resolution was made by gemini ai, but the images are made by me and other contributors.
+We photograph walls, ground, and surfaces, and then use Python scripts to rename new source images and generate square textures at lower resolutions.
+The processing scripts were created with Gemini AI, while the source photographs are taken by me and contributors.
 
 ## Tools & Automation
 
-- **Python** & **Pillow (`PIL`)** – used in the processing script to crop and scale textures down to `64p`, `128p`, and `256p`
-- **GitHub Actions** – automatically runs the processing script on updates to source images and commits the generated textures.
-- This license applies only to the contents of this repository and does not alter the licenses of third-party tools, runtimes, or libraries used to build or run it.
+- **Python & Pillow (PIL)** – renames new files in `Original-Photos/` using two random English words from `data/words.txt`, clears output directories, and crops/scales textures into squares (`64x64`, `128x128`, and `256x256` in `64p`, `128p`, and `256p`).
+- **GitHub Actions** – automatically runs the renaming and texture-processing scripts on updates to source images and commits the renamed originals and generated textures.
+- **License scope** – this license (CC0 1.0 Universal) applies only to the contents of this repository and does not alter the licenses of third-party tools, runtimes, or libraries used to build or run it.
 
 
 ## Star History
